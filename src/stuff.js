@@ -1,5 +1,6 @@
 export function doStuff(element) { 
-  element.addEventListener('submit', function(event) {
+  element.addEventListener('submit', async function(event) {
+    const apiUrl = import.meta.env.VITE_API_URL
     event.preventDefault(); 
     console.log(element)
 
@@ -21,6 +22,22 @@ export function doStuff(element) {
     console.log('last name', lastName)
     console.log('email', email)
     console.log('password', password)
+
+    console.log(apiUrl)
+
+    try {
+      const response = await fetch(`${apiUrl}/api/auth/login`, {  method: "POST" })
+      if (!response.ok) {
+        throw Error('failed to hit the api')
+      }
+
+      const data = await response.json();
+
+      console.log('>>>>>>>>> ', data.message)
+
+    } catch(err) {
+      console.log(err)
+    }
     
   });
 }
